@@ -1,5 +1,6 @@
 package com.example.restapiwithspring.events;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -17,9 +18,11 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class EventController {
 
     private final EventRepository eventRepository;
+    private final ModelMapper modelMapper;
 
-    public EventController(EventRepository eventRepository) {
+    public EventController(EventRepository eventRepository, ModelMapper modelMapper) {
         this.eventRepository = eventRepository;
+        this.modelMapper = modelMapper;
     }
 
     /**
@@ -28,11 +31,10 @@ public class EventController {
      * @return
      */
     @PostMapping
-    public ResponseEntity createEvent(@RequestBody Event event){
+    public ResponseEntity createEvent(@RequestBody EventDto eventDto){
+        Event event = modelMapper.map(eventDto, Event.class); // Dto 값들을 Event에 대입 (builder나 set을 사용하지 않아도 됨)
         Event newEvenv = this.eventRepository.save(event);
-
         URI createUri = linkTo(EventController.class).slash(newEvenv.getId()).toUri();
-        event.setId(10);
         return ResponseEntity.created(createUri).body(event);
     }
 }
