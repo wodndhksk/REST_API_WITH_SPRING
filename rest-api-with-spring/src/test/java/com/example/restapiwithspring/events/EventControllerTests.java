@@ -102,4 +102,30 @@ public class EventControllerTests {
                 .andExpect(status().isBadRequest())
         ;
     }
+
+    @Test
+    public void createEvent_Bad_Request_Wrong_Input() throws Exception {
+        EventDto eventDto = EventDto.builder()
+                .name("Spring")
+                .description("Rest API Development with Spring")
+                // 날짜 값 오류
+                .beginEnrollmentDateTime(LocalDateTime.of(2022,06, 30, 10, 49))
+                .closeEnrollmentDateTime(LocalDateTime.of(2022,06, 29, 10, 49))
+                .beginEventDateTime(LocalDateTime.of(2022, 06, 28, 10, 49))
+                .endEventDateTime(LocalDateTime.of(2022, 06, 27, 10, 49))
+                //base 값과 max 값의 오류 (정상 case : base < max )
+                .basePrice(10000)
+                .maxPrice(200)
+                //
+                .limitOfEnrollment(100)
+                .location("뚝섬역 서울숲 M타워")
+                .build();
+
+        mockMvc.perform(post("/api/events")
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+                        .content(this.objectMapper.writeValueAsString(eventDto))
+                )
+                .andExpect(status().isBadRequest())
+        ;
+    }
 }
