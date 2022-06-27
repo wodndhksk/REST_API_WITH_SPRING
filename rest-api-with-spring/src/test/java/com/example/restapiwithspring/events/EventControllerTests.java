@@ -29,30 +29,22 @@ public class EventControllerTests {
 
     @Autowired
     MockMvc mockMvc;
-
     @Autowired
     ObjectMapper objectMapper;
 
-//    @MockBean
-//    EventRepository eventRepository;
-
     @Test
     public void createEvent() throws Exception {
-        Event event = Event.builder()
-                .id(10)
+        EventDto event = EventDto.builder()
                 .name("Spring")
                 .description("Rest API Development with Spring")
                 .beginEnrollmentDateTime(LocalDateTime.of(2022,06, 27, 10, 49))
                 .closeEnrollmentDateTime(LocalDateTime.of(2022,06, 28, 10, 49))
-                .beginEnrollmentDateTime(LocalDateTime.of(2022, 06, 29, 10, 49))
+                .beginEventDateTime(LocalDateTime.of(2022, 06, 29, 10, 49))
                 .endEventDateTime(LocalDateTime.of(2022, 06, 30, 10, 49))
                 .basePrice(100)
                 .maxPrice(200)
                 .limitOfEnrollment(100)
                 .location("뚝섬역 서울숲 M타워")
-                .free(true)
-                .offline(false)
-                .eventStatus(EventStatus.PUBLISHED)
                 .build();
 
         mockMvc.perform(post("/api/events/")
@@ -69,6 +61,45 @@ public class EventControllerTests {
                 .andExpect(jsonPath("free").value(Matchers.not(true)))
                 .andExpect(jsonPath("eventStatus").value(EventStatus.DRAFT.name()))
         ;  // 201
+    }
+    @Test
+    public void createEvent_Bad_Request() throws Exception {
+        Event event = Event.builder()
+                .id(10)
+                .name("Spring")
+                .description("Rest API Development with Spring")
+                .beginEnrollmentDateTime(LocalDateTime.of(2022,06, 27, 10, 49))
+                .closeEnrollmentDateTime(LocalDateTime.of(2022,06, 28, 10, 49))
+                .beginEventDateTime(LocalDateTime.of(2022, 06, 29, 10, 49))
+                .endEventDateTime(LocalDateTime.of(2022, 06, 30, 10, 49))
+                .basePrice(100)
+                .maxPrice(200)
+                .limitOfEnrollment(100)
+                .location("뚝섬역 서울숲 M타워")
+                .free(true)
+                .offline(false)
+                .eventStatus(EventStatus.PUBLISHED)
+                .build();
 
+        mockMvc.perform(post("/api/events/")
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+                        .accept(MediaTypes.HAL_JSON)
+                        .content(objectMapper.writeValueAsString(event))
+                )
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+        ;
+    }
+
+    @Test
+    public void createEvent_Bad_Request_Empty_Input() throws Exception {
+        EventDto eventDto = EventDto.builder().build();
+
+        mockMvc.perform(post("/api/events")
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+                        .content(this.objectMapper.writeValueAsString(eventDto))
+                )
+                .andExpect(status().isBadRequest())
+        ;
     }
 }
