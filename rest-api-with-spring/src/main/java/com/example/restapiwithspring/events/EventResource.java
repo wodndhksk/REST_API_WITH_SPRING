@@ -10,13 +10,14 @@ public class EventResource extends EntityModel<Event> {
 //    public EventResource(Event content, Link... links){
 //        super(content, links);
 //    }
-//    @JsonUnwrapped
-//    private Event event;
-//
-//    public EventResource(Event event){
-//        this.event = event;
-//    }
-//    public Event getEvent(){
-//        return event;
-//    }
+
+    @JsonUnwrapped
+    private Event event;
+
+    public EventResource(Event event){
+        this.event = event;
+    }
+    public Event getEvent(){
+        return event;
+    }
 }

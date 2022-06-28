@@ -3,8 +3,8 @@ package com.example.restapiwithspring.events;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
-import org.junit.jupiter.api.Test;
 
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(JUnitParamsRunner.class)
 class EventTest {
-    @ParameterizedTest
+    @Test
     public void builder(){
         Event event = Event.builder()
                 .name("SPRING REST API TEST")
@@ -26,14 +26,14 @@ class EventTest {
         assertThat(event).isNotNull();
     }
 
-    @ParameterizedTest
+    @Test
     public void javaBean(){
         Event event = new Event();
         String name = "Event";
         String spring = "Spring";
 
         event.setName(name);
-        event.setDescription("Event Spring");
+        event.setDescription(spring);
 
         assertThat(event.getName()).isEqualTo(name);
         assertThat(event.getDescription()).isEqualTo(spring);
