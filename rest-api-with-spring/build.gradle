@@ -42,6 +42,9 @@ dependencies {
 	testImplementation group: 'pl.pragmatists', name: 'JUnitParams', version: '1.1.1'
 	// https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-params
 	testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: '5.7.0'
+	// https://mvnrepository.com/artifact/org.springframework.hateoas/spring-hateoas
+	implementation group: 'org.springframework.hateoas', name: 'spring-hateoas', version: '1.5.0'
+
 
 
 }

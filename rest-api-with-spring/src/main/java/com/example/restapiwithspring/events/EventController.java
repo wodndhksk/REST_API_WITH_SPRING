@@ -1,7 +1,9 @@
 package com.example.restapiwithspring.events;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.MediaTypes;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
@@ -43,7 +45,20 @@ public class EventController {
         Event event = modelMapper.map(eventDto, Event.class); // Dto 값들을 Event에 대입 (builder나 set을 사용하지 않아도 됨)
         event.update();
         Event newEvent = this.eventRepository.save(event);
-        URI createUri = linkTo(EventController.class).slash(newEvent.getId()).toUri();
-         return ResponseEntity.created(createUri).body(event);
+        WebMvcLinkBuilder selfLinkBuilder = linkTo(EventController.class).slash(newEvent.getId());
+        URI createUri = selfLinkBuilder.toUri();
+//        링크 생성
+//        EventResource eventResource = new EventResource(event);
+//        eventResource.add(linkTo(EventController.class).withRel("query-events"));
+//        eventResource.add(selfLinkBuilder.withSelfRel());
+//        eventResource.add(selfLinkBuilder.withRel("update-event"));
+
+        //EventResource class를 만들지 않고 하는 방법
+        EntityModel<Event> eventEntityModel = EntityModel.of(event,
+                selfLinkBuilder.slash(event.getId()).withSelfRel(),
+                selfLinkBuilder.withRel("query-events"),
+                selfLinkBuilder.withRel("update-event")
+        );
+        return ResponseEntity.created(createUri).body(eventEntityModel);
     }
 }
