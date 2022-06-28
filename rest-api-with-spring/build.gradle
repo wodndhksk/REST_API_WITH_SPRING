@@ -38,6 +38,11 @@ dependencies {
 	// https://mvnrepository.com/artifact/org.modelmapper/modelmapper
 	implementation group: 'org.modelmapper', name: 'modelmapper', version: '3.0.0'
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.5.6'
+	// https://mvnrepository.com/artifact/pl.pragmatists/JUnitParams
+	testImplementation group: 'pl.pragmatists', name: 'JUnitParams', version: '1.1.1'
+	// https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-params
+	testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: '5.7.0'
+
 
 }
 
