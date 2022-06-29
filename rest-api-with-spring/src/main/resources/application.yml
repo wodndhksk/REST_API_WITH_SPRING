@@ -3,3 +3,34 @@ spring:
   jackson:
     deserialization:
       fail-on-unknown-properties: true
+
+# 데이터 소스 설정
+  datasource:
+    username: postgres
+    password: pass
+    url: jdbc:postgresql://localhost:5432/postgres
+    driver-class-name: org.postgresql.Driver
+
+#하이버네이트 설정
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        format_sql: true
+
+        jdbc:
+          lob:
+            non_contextual_creation: true
+#로그 설정
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG #쿼리 보이게 설정
+        type:
+          descriptor:
+            sql:
+              BasicBinder : TRACE #쿼리 보일때 값까지 볼 수 있게
+    springframework:
+      security: DEBUG

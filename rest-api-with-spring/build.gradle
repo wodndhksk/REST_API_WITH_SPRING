@@ -33,6 +33,7 @@ task copyDocument(type: Copy) {
 	from file("build/asciidoc/html5")
 	into file("src/main/resources/static/docs")
 }
+
 //
 repositories {
 	mavenCentral()
@@ -57,7 +58,8 @@ dependencies {
 	implementation 'junit:junit:4.13.1'
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	runtimeOnly 'com.h2database:h2'
+/*	runtimeOnly */
+	testRuntime 'com.h2database:h2'
 	runtimeOnly 'org.postgresql:postgresql'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -68,9 +70,12 @@ dependencies {
 	// https://mvnrepository.com/artifact/pl.pragmatists/JUnitParams
 	testImplementation group: 'pl.pragmatists', name: 'JUnitParams', version: '1.1.1'
 	// https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-params
-	testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: '5.7.0'
+//	testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: '5.7.0'
 	// https://mvnrepository.com/artifact/org.springframework.hateoas/spring-hateoas
 	implementation group: 'org.springframework.hateoas', name: 'spring-hateoas', version: '1.5.0'
+	// https://mvnrepository.com/artifact/org.springframework.security.oauth.boot/spring-security-oauth2-autoconfigure
+	implementation group: 'org.springframework.security.oauth.boot', name: 'spring-security-oauth2-autoconfigure', version: '2.1.0.RELEASE'
+
 
 //	asciidoctor 'org.springframework.restdocs:spring-restdocs-asciidoctor:2.0.2.RELEASE'
 //	asciidoctorExtensions 'org.springframework.restdocs:spring-restdocs-asciidoctor'
