@@ -1,5 +1,7 @@
 package com.example.restapiwithspring.events;
 
+import com.example.restapiwithspring.common.ErrorsResource;
+import com.example.restapiwithspring.index.IndexController;
 import org.modelmapper.ModelMapper;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
@@ -16,6 +18,7 @@ import javax.validation.Valid;
 import java.net.URI;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Controller
 @RequestMapping(value = "/api/events", produces = MediaTypes.HAL_JSON_VALUE)
@@ -35,12 +38,12 @@ public class EventController {
     @PostMapping
     public ResponseEntity createEvent(@RequestBody @Valid EventDto eventDto, Errors errors){
         if(errors.hasErrors()){
-            return ResponseEntity.badRequest().build();
+            return badRequest(errors);
         }
 
         eventValidator.validate(eventDto, errors);
         if(errors.hasErrors()){
-            return ResponseEntity.badRequest().body(errors);
+            return badRequest(errors);
         }
 
         Event event = modelMapper.map(eventDto, Event.class); // Dto 값들을 Event에 대입 (builder나 set을 사용하지 않아도 됨)
@@ -63,5 +66,9 @@ public class EventController {
                 Link.of("/docs/index.html#resources-notes-create").withRel("profile")
         );
         return ResponseEntity.created(createUri).body(eventEntityModel);
+    }
+
+    private ResponseEntity<ErrorsResource> badRequest(Errors errors) {
+        return ResponseEntity.badRequest().body(new ErrorsResource(errors));
     }
 }

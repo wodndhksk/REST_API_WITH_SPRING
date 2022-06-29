@@ -1,5 +1,6 @@
 package com.example.restapiwithspring.events;
 
+import com.example.restapiwithspring.account.Account;
 import lombok.*;
 
 import javax.persistence.*;
@@ -23,6 +24,10 @@ public class Event {
     private int basePrice; // (optional)
     private int maxPrice; // (optional)
     private int limitOfEnrollment;
+
+    @ManyToOne
+    private Account manager;
+
     private boolean offline;
     private boolean free;
     @Enumerated(EnumType.STRING)

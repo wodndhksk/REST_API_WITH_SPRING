@@ -17,6 +17,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -36,6 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs
 @Import({RestDocsConfiguration.class})
+@ActiveProfiles("test")
 public class EventControllerTests {
 
     @Autowired
@@ -198,6 +200,7 @@ public class EventControllerTests {
                 .andExpect(jsonPath("$[0].defaultMessage").exists())
                 .andExpect(jsonPath("$[0].code").exists())
 //                .andExpect(jsonPath("$[0].rejectedValue").exists())
+                .andExpect(jsonPath("_links.index").exists())
         ;
     }
 }
